@@ -34,7 +34,7 @@ class CommandParserTest {
 
     @Test
     void parseClearCommand() {
-        Optional<Command> cmd = parser.parse("clear C5");
+        Optional<Command> cmd = parser.parse("C5 clear");
         assertTrue(cmd.isPresent());
         assertInstanceOf(ClearCommand.class, cmd.get());
         ClearCommand clear = (ClearCommand) cmd.get();

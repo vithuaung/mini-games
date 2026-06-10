@@ -23,7 +23,7 @@ public class SudokuGenerator {
         int[][] full = new int[9][9];
         fillGrid(full);
         int[][] puzzle = deepCopy(full);
-        removeClues(puzzle, 45);
+        removeClues(puzzle, 51);
         boolean[][] preFilled = new boolean[9][9];
         for (int r = 0; r < 9; r++)
             for (int c = 0; c < 9; c++)

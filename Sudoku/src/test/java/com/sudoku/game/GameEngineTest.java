@@ -72,17 +72,13 @@ class GameEngineTest {
 
     @Test
     void placeOnPreFilledCellIsRejected() {
-        // With the buggy CommandParser (row +1, col no -1),
-        // "A1 9" is parsed as PlaceCommand(1, 1, 9).
-        // Cell (1,1) in gridWithOneEmptyCell() is the empty cell (value 0, not pre-filled),
-        // so use "A2 9" which with bugs maps to PlaceCommand(1, 2, 9) — cell (1,2) is pre-filled.
         RecordingDisplay display = new RecordingDisplay();
         GameEngine engine = new GameEngine(
             new FixedGenerator(gridWithOneEmptyCell()),
             new SudokuSolver(), new SudokuValidator(),
             display, new CommandParser()
         );
-        engine.start(new Scanner("A2 9\nquit\n"));
+        engine.start(new Scanner("A1 9\nquit\n"));
         assertTrue(display.messages.stream()
             .anyMatch(m -> m.toLowerCase().contains("pre-filled") || m.toLowerCase().contains("filled")),
             "Placing on a pre-filled cell must be rejected");
@@ -98,7 +94,7 @@ class GameEngineTest {
         );
         engine.start(new Scanner("check\nquit\n"));
         assertTrue(display.messages.stream()
-            .anyMatch(m -> m.toLowerCase().contains("no violation")),
+            .anyMatch(m -> m.toLowerCase().contains("violations detected")),
             "check on a valid grid should report no violations");
     }
 

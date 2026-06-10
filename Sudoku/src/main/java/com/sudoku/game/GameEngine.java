@@ -38,7 +38,7 @@ public class GameEngine {
             Optional<Command> cmd = parser.parse(line);
 
             if (cmd.isEmpty()) {
-                display.printMessage("Unknown command. Try: A1 5, clear A1, hint, check, quit");
+                display.printMessage("Unknown command. Try: A3 4, C5 clear, hint, check, quit");
                 continue;
             }
 
@@ -46,11 +46,18 @@ public class GameEngine {
             if (quit) break;
 
             if (grid.isComplete() && validator.isValid(grid)) {
-                display.printMessage("Congratulations! Puzzle solved!");
+                display.printMessage("");
+                display.printMessage("You have successfully completed the Sudoku puzzle!");
+                display.printMessage("Press any key to play again...");
                 break;
             }
-            display.printGrid(grid);
         }
+    }
+
+    private void printCurrentGrid(Grid grid) {
+        display.printMessage("");
+        display.printMessage("Current grid:");
+        display.printGrid(grid);
     }
 
     private boolean execute(Command cmd, Grid grid) {
@@ -58,6 +65,7 @@ public class GameEngine {
             case PlaceCommand p -> {
                 MoveResult result = handlePlace(grid, p.row(), p.col(), p.value());
                 display.printMessage(result.message());
+                printCurrentGrid(grid);
                 yield false;
             }
             case ClearCommand c -> {
@@ -67,15 +75,17 @@ public class GameEngine {
                     grid.clearCell(c.row(), c.col());
                     display.printMessage("Cell cleared.");
                 }
+                printCurrentGrid(grid);
                 yield false;
             }
             case HintCommand h -> {
                 giveHint(grid);
+                printCurrentGrid(grid);
                 yield false;
             }
             case CheckCommand ch -> {
                 Optional<String> violation = validator.findViolation(grid);
-                display.printMessage(violation.orElse("No violations found."));
+                display.printMessage(violation.orElse("No rule violations detected."));
                 yield false;
             }
             case QuitCommand q -> {
@@ -107,7 +117,7 @@ public class GameEngine {
             for (int c = 0; c < 9; c++) {
                 if (grid.getCell(r, c).isEmpty()) {
                     grid.placeValue(r, c, solved[r][c]);
-                    display.printMessage("Hint: " + (char) ('A' + r) + (c + 1) + " = " + solved[r][c]);
+                    display.printMessage("Hint: Cell " + (char) ('A' + r) + (c + 1) + " = " + solved[r][c]);
                     return;
                 }
             }

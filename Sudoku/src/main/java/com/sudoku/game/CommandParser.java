@@ -9,7 +9,7 @@ public class CommandParser {
     private static final Pattern PLACE =
         Pattern.compile("(?:place\\s+)?([A-Ia-i])([1-9])\\s+([1-9])");
     private static final Pattern CLEAR =
-        Pattern.compile("clear\\s+([A-Ia-i])([1-9])");
+        Pattern.compile("([A-Ia-i])([1-9])\\s+clear");
 
     public Optional<Command> parse(String input) {
         if (input == null) return Optional.empty();
