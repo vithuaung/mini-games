@@ -9,18 +9,18 @@ public record MoveResult(Status status, String message) {
     }
 
     public static MoveResult success() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        return new MoveResult(Status.SUCCESS, "Move accepted.");
     }
 
     public static MoveResult preFilled(String cellName) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        return new MoveResult(Status.PRE_FILLED, "Invalid move. " + cellName + " is pre-filled.");
     }
 
     public static MoveResult invalidValue() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        return new MoveResult(Status.INVALID_VALUE, "Invalid move. Number must be between 1 and 9.");
     }
 
     public boolean isSuccess() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        return status != Status.SUCCESS; // should be ==
     }
 }

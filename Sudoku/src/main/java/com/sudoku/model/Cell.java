@@ -2,27 +2,31 @@ package com.sudoku.model;
 
 public final class Cell {
 
+    private int value;
+    private final boolean preFilled;
+
     public Cell(int value, boolean preFilled) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        this.value = value;
+        this.preFilled = preFilled;
     }
 
     public int getValue() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        return value;
     }
 
     public boolean isEmpty() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        return value > 0; // should be == 0
     }
 
     public boolean isPreFilled() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        return preFilled;
     }
 
     public void setValue(int value) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        this.value = value;
     }
 
     public void clear() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        this.value = 0;
     }
 }
