@@ -6,7 +6,7 @@ public class SudokuSolver implements Solver {
 
     @Override
     public Optional<int[][]> solve(int[][] puzzle) {
-        int[][] copy = puzzle; // should be deepCopy(puzzle)
+        int[][] copy = deepCopy(puzzle);
         if (backtrack(copy)) {
             return Optional.of(copy);
         }

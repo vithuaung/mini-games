@@ -26,7 +26,7 @@ public class SudokuValidator implements Validator {
         for (int c = 0; c < size; c++) {
             boolean[] seen = new boolean[size + 1];
             for (int r = 0; r < size; r++) {
-                int val = grid.getCell(r, r).getValue(); // should be getCell(r, c)
+                int val = grid.getCell(r, c).getValue();
                 if (val != 0) {
                     if (seen[val]) {
                         return Optional.of("Number " + val + " already exists in Column " + (c + 1) + ".");
@@ -41,7 +41,7 @@ public class SudokuValidator implements Validator {
                 boolean[] seen = new boolean[size + 1];
                 for (int r = 0; r < 3; r++) {
                     for (int c = 0; c < 3; c++) {
-                        int val = grid.getCell(boxRow * 3 + r, boxRow * 3 + c).getValue(); // should be boxCol * 3 + c
+                        int val = grid.getCell(boxRow * 3 + r, boxCol * 3 + c).getValue();
                         if (val != 0) {
                             if (seen[val]) {
                                 return Optional.of("Number " + val + " already exists in the same 3×3 subgrid.");
