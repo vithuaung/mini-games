@@ -11,22 +11,25 @@ grid is fully and correctly filled.
 
 ```
 com.sudoku
-├── Main.java               entry point
-├── model/                  plain data – holds game state, no rules
+├── Main.java                   entry point – wires all dependencies together
+├── model/                      plain data – holds game state, no rules
 │   ├── Cell.java
 │   ├── Grid.java
 │   └── MoveResult.java
-├── engine/                 core logic – generation, solving, validation
+├── engine/                     core logic – generation, solving, validation
+│   ├── Solver.java             interface
+│   ├── Validator.java          interface
 │   ├── SudokuGenerator.java
-│   ├── SudokuSolver.java
-│   └── SudokuValidator.java
-├── game/                   user interaction – command parsing and game loop
-│   ├── Command.java        sealed interface + record subtypes
+│   ├── SudokuSolver.java       implements Solver
+│   └── SudokuValidator.java    implements Validator
+├── game/                       user interaction – command parsing and game loop
+│   ├── Command.java            sealed interface + record subtypes
 │   ├── CommandParser.java
 │   ├── GameEngine.java
 │   └── ParseException.java
 └── ui/
-    └── ConsoleRenderer.java   renders the grid and messages to stdout
+    ├── GameDisplay.java        interface
+    └── ConsoleRenderer.java    implements GameDisplay
 ```
 
 ## Key Design Decisions
@@ -34,6 +37,22 @@ com.sudoku
 **Model vs engine separation**
 Grid and Cell only store state. They have no knowledge of Sudoku rules.
 This keeps the model classes simple and makes the engine easy to test on its own.
+
+**Grid owns its mutations**
+Rather than exposing Cell objects directly and letting callers call
+`cell.setValue()` freely, Grid exposes `placeValue(row, col, value)` and
+`clearCell(row, col)`. This keeps mutation paths controlled and makes the
+intent at call sites obvious.
+
+**Dependency Inversion – interfaces for engine and display**
+GameEngine depends on the `Solver`, `Validator`, and `GameDisplay` interfaces,
+not on the concrete classes. All dependencies are injected through the
+constructor. This makes GameEngine testable in isolation and keeps the
+high-level game logic decoupled from implementation details like how the board
+is solved or how output is rendered.
+
+`Main` is the only place that knows about concrete types and wires everything
+together.
 
 **Solver – backtracking**
 A recursive backtracking algorithm fills empty cells one at a time and backs up
