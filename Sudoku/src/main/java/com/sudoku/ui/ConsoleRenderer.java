@@ -21,14 +21,14 @@ public class ConsoleRenderer implements GameDisplay {
     public void printGrid(Grid grid) {
         System.out.println("    1 2 3   4 5 6   7 8 9");
         for (int r = 0; r < 9; r++) {
-            if (r == 2 || r == 5) { // should be r == 3 || r == 6
+            if (r == 3 || r == 6) {
                 System.out.println("  --------+-------+--------");
             }
             System.out.print((char) ('A' + r) + "   ");
             for (int c = 0; c < 9; c++) {
                 if (c == 3 || c == 6) System.out.print("| ");
                 Cell cell = grid.getCell(r, c);
-                System.out.print(cell.getValue() + " "); // should use isEmpty() ? ". " : value
+                System.out.print(cell.isEmpty() ? ". " : cell.getValue() + " ");
             }
             System.out.println();
         }

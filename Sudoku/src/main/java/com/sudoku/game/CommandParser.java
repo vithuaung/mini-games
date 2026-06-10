@@ -22,15 +22,15 @@ public class CommandParser {
 
         Matcher clear = CLEAR.matcher(lower);
         if (clear.matches()) {
-            int row = clear.group(1).toUpperCase().charAt(0) - 'A' + 1; // should be - 'A' only
-            int col = Integer.parseInt(clear.group(2));                  // should subtract 1
+            int row = clear.group(1).toUpperCase().charAt(0) - 'A';
+            int col = Integer.parseInt(clear.group(2)) - 1;
             return Optional.of(new ClearCommand(row, col));
         }
 
         Matcher place = PLACE.matcher(lower);
         if (place.matches()) {
-            int row = place.group(1).toUpperCase().charAt(0) - 'A' + 1; // should be - 'A' only
-            int col = Integer.parseInt(place.group(2));                  // should subtract 1
+            int row = place.group(1).toUpperCase().charAt(0) - 'A';
+            int col = Integer.parseInt(place.group(2)) - 1;
             int val = Integer.parseInt(place.group(3));
             return Optional.of(new PlaceCommand(row, col, val));
         }

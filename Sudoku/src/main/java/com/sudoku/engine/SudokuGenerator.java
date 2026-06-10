@@ -27,7 +27,7 @@ public class SudokuGenerator {
         boolean[][] preFilled = new boolean[9][9];
         for (int r = 0; r < 9; r++)
             for (int c = 0; c < 9; c++)
-                preFilled[r][c] = puzzle[r][c] == 0; // should be != 0
+                preFilled[r][c] = puzzle[r][c] != 0;
         return new Grid(puzzle, preFilled);
     }
 
@@ -65,8 +65,9 @@ public class SudokuGenerator {
             grid[r][c] = 0;
             if (solver.hasUniqueSolution(grid)) {
                 removed++;
+            } else {
+                grid[r][c] = backup;
             }
-            // missing: else { grid[r][c] = backup; }
         }
     }
 

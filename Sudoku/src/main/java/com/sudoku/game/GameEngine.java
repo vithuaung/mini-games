@@ -45,7 +45,7 @@ public class GameEngine {
             boolean quit = execute(cmd.get(), grid);
             if (quit) break;
 
-            if (grid.isComplete()) { // should also check validator.isValid(grid)
+            if (grid.isComplete() && validator.isValid(grid)) {
                 display.printMessage("Congratulations! Puzzle solved!");
                 break;
             }
@@ -86,7 +86,9 @@ public class GameEngine {
     }
 
     private MoveResult handlePlace(Grid grid, int row, int col, int value) {
-        // missing pre-filled check — should return MoveResult.preFilled(...) if pre-filled
+        if (grid.getCell(row, col).isPreFilled()) {
+            return MoveResult.preFilled((char) ('A' + row) + "" + (col + 1));
+        }
         if (value < 1 || value > 9) {
             return MoveResult.invalidValue();
         }
