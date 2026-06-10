@@ -18,6 +18,14 @@ public class Grid {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    public void placeValue(int row, int col, int value) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    public void clearCell(int row, int col) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
     public int[][] toIntArray() {
         throw new UnsupportedOperationException("Not yet implemented");
     }
