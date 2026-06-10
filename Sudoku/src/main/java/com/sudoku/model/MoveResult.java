@@ -21,6 +21,6 @@ public record MoveResult(Status status, String message) {
     }
 
     public boolean isSuccess() {
-        return status != Status.SUCCESS; // should be ==
+        return status == Status.SUCCESS;
     }
 }

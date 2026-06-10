@@ -15,7 +15,7 @@ public final class Cell {
     }
 
     public boolean isEmpty() {
-        return value > 0; // should be == 0
+        return value == 0;
     }
 
     public boolean isPreFilled() {
