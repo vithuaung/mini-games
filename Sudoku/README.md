@@ -25,6 +25,7 @@ mvn test
 ## Run the Game
 
 ```bash
+cd Sudoku
 java -jar target/sudoku.jar
 ```
 
