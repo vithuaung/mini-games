@@ -72,4 +72,16 @@ class ConsoleRendererTest {
         String output = captureOutput(() -> renderer.printInitialGrid(grid));
         assertTrue(output.contains("Here is your puzzle"), "Initial grid should include puzzle header");
     }
+
+    @Test
+    void printMessageOutputsText() {
+        String output = captureOutput(() -> renderer.printMessage("hello world"));
+        assertTrue(output.contains("hello world"), "printMessage should write the given text");
+    }
+
+    @Test
+    void printPromptOutputsCommandHint() {
+        String output = captureOutput(() -> renderer.printPrompt());
+        assertTrue(output.contains("Enter command"), "printPrompt should show the command prompt");
+    }
 }

@@ -109,9 +109,6 @@ public class GameEngine {
         if (grid.getCell(row, col).isPreFilled()) {
             return MoveResult.preFilled((char) ('A' + row) + "" + (col + 1));
         }
-        if (value < 1 || value > 9) {
-            return MoveResult.invalidValue();
-        }
         grid.placeValue(row, col, value);
         return MoveResult.success();
     }

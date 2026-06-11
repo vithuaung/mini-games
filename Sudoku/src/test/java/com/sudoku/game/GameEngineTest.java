@@ -1,5 +1,6 @@
 package com.sudoku.game;
 
+import com.sudoku.engine.Solver;
 import com.sudoku.engine.SudokuGenerator;
 import com.sudoku.engine.SudokuSolver;
 import com.sudoku.engine.SudokuValidator;
@@ -35,6 +36,23 @@ class GameEngineTest {
         public Grid generate() {
             return grid;
         }
+    }
+
+    // All cells filled, no empty cells at all
+    private static Grid gridFullyFilled() {
+        int[][] vals = {
+            {5, 3, 4, 6, 7, 8, 9, 1, 2},
+            {6, 7, 2, 1, 9, 5, 3, 4, 8},
+            {1, 9, 8, 3, 4, 2, 5, 6, 7},
+            {8, 5, 9, 7, 6, 1, 4, 2, 3},
+            {4, 2, 6, 8, 5, 3, 7, 9, 1},
+            {7, 1, 3, 9, 2, 4, 8, 5, 6},
+            {9, 6, 1, 5, 3, 7, 2, 8, 4},
+            {2, 8, 7, 4, 1, 9, 6, 3, 5},
+            {3, 4, 5, 2, 8, 6, 1, 7, 9}
+        };
+        boolean[][] preFilled = new boolean[9][9];
+        return new Grid(vals, preFilled);
     }
 
     // All cells filled except (1,1) which is empty and not pre-filled
@@ -168,6 +186,38 @@ class GameEngineTest {
         assertTrue(display.messages.stream()
             .anyMatch(m -> m.toLowerCase().contains("successfully")),
             "Filling the last cell correctly should trigger the win message");
+    }
+
+    @Test
+    void hintOnFullyFilledGridReportsNoEmptyCells() {
+        RecordingDisplay display = new RecordingDisplay();
+        GameEngine engine = new GameEngine(
+            new FixedGenerator(gridFullyFilled()),
+            new SudokuSolver(), new SudokuValidator(),
+            display, new CommandParser()
+        );
+        engine.start(new Scanner("hint\nquit\n"));
+        assertTrue(display.messages.stream()
+            .anyMatch(m -> m.toLowerCase().contains("no empty cells")),
+            "hint on a fully filled grid should report no empty cells");
+    }
+
+    @Test
+    void hintWhenSolverReturnsNoSolutionReportsIt() {
+        RecordingDisplay display = new RecordingDisplay();
+        Solver alwaysEmpty = new Solver() {
+            @Override public java.util.Optional<int[][]> solve(int[][] p) { return java.util.Optional.empty(); }
+            @Override public boolean hasUniqueSolution(int[][] p) { return false; }
+        };
+        GameEngine engine = new GameEngine(
+            new FixedGenerator(gridWithOneEmptyCell()),
+            alwaysEmpty, new SudokuValidator(),
+            display, new CommandParser()
+        );
+        engine.start(new Scanner("hint\nquit\n"));
+        assertTrue(display.messages.stream()
+            .anyMatch(m -> m.toLowerCase().contains("no solution")),
+            "hint should report no solution when the solver returns empty");
     }
 
     @Test
