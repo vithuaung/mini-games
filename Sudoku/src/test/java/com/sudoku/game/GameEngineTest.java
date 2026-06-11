@@ -169,4 +169,38 @@ class GameEngineTest {
             .anyMatch(m -> m.toLowerCase().contains("successfully")),
             "Filling the last cell correctly should trigger the win message");
     }
+
+    @Test
+    void winThenAnyKeyRestartsWithNewPuzzle() {
+        // Count how many times printInitialGrid is called — restart means a second call
+        int[] initialGridCalls = {0};
+        GameDisplay countingDisplay = new GameDisplay() {
+            @Override public void printWelcome() {}
+            @Override public void printInitialGrid(Grid grid) { initialGridCalls[0]++; }
+            @Override public void printGrid(Grid grid) {}
+            @Override public void printMessage(String msg) {}
+            @Override public void printPrompt() {}
+        };
+        GameEngine engine = new GameEngine(
+            new FixedGenerator(gridWithOneEmptyCell()),
+            new SudokuSolver(), new SudokuValidator(),
+            countingDisplay, new CommandParser()
+        );
+        // Win with B2 7, press Enter as "any key", then quit the new round
+        engine.start(new Scanner("B2 7\n\nquit\n"));
+        assertEquals(2, initialGridCalls[0], "Pressing any key after win should start a new puzzle");
+    }
+
+    @Test
+    void winWithNoMoreInputExitsCleanly() {
+        RecordingDisplay display = new RecordingDisplay();
+        GameEngine engine = new GameEngine(
+            new FixedGenerator(gridWithOneEmptyCell()),
+            new SudokuSolver(), new SudokuValidator(),
+            display, new CommandParser()
+        );
+        // Win with B2 7, then no further input — should exit without throwing
+        assertDoesNotThrow(() -> engine.start(new Scanner("B2 7")),
+            "No input after win should exit cleanly");
+    }
 }

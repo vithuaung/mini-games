@@ -29,9 +29,15 @@ public class GameEngine {
 
     public void start(Scanner scanner) {
         display.printWelcome();
-        Grid grid = generator.generate();
-        display.printInitialGrid(grid);
+        while (true) {
+            Grid grid = generator.generate();
+            display.printInitialGrid(grid);
+            boolean restart = playRound(scanner, grid);
+            if (!restart) break;
+        }
+    }
 
+    private boolean playRound(Scanner scanner, Grid grid) {
         while (scanner.hasNextLine()) {
             display.printPrompt();
             String line = scanner.nextLine().trim();
@@ -43,15 +49,20 @@ public class GameEngine {
             }
 
             boolean quit = execute(cmd.get(), grid);
-            if (quit) break;
+            if (quit) return false;
 
             if (grid.isComplete() && validator.isValid(grid)) {
                 display.printMessage("");
                 display.printMessage("You have successfully completed the Sudoku puzzle!");
                 display.printMessage("Press any key to play again...");
-                break;
+                if (scanner.hasNextLine()) {
+                    scanner.nextLine();
+                    return true;
+                }
+                return false;
             }
         }
+        return false;
     }
 
     private void printCurrentGrid(Grid grid) {
@@ -80,7 +91,6 @@ public class GameEngine {
             }
             case HintCommand h -> {
                 giveHint(grid);
-                printCurrentGrid(grid);
                 yield false;
             }
             case CheckCommand ch -> {
