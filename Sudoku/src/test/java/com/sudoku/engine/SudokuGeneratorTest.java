@@ -52,4 +52,14 @@ class SudokuGeneratorTest {
         assertTrue(solver.hasUniqueSolution(grid.toIntArray()),
             "Generated puzzle must have exactly one solution");
     }
+
+    @Test
+    void seededGeneratorProducesDeterministicPuzzle() {
+        Grid a = new SudokuGenerator(42).generate();
+        Grid b = new SudokuGenerator(42).generate();
+        for (int r = 0; r < 9; r++)
+            for (int c = 0; c < 9; c++)
+                assertEquals(a.getCell(r, c).getValue(), b.getCell(r, c).getValue(),
+                    "Same seed must produce identical puzzles at (" + r + "," + c + ")");
+    }
 }

@@ -4,8 +4,7 @@ public record MoveResult(Status status, String message) {
 
     public enum Status {
         SUCCESS,
-        PRE_FILLED,
-        INVALID_VALUE
+        PRE_FILLED
     }
 
     public static MoveResult success() {
@@ -14,10 +13,6 @@ public record MoveResult(Status status, String message) {
 
     public static MoveResult preFilled(String cellName) {
         return new MoveResult(Status.PRE_FILLED, "Invalid move. " + cellName + " is pre-filled.");
-    }
-
-    public static MoveResult invalidValue() {
-        return new MoveResult(Status.INVALID_VALUE, "Invalid move. Number must be between 1 and 9.");
     }
 
     public boolean isSuccess() {

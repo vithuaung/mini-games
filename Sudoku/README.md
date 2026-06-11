@@ -21,7 +21,7 @@ Produces `target/sudoku.jar`.
 mvn test
 ```
 
-62 tests across 9 test classes, all should pass.
+65 tests across 9 test classes, all should pass.
 
 ## Run the Game
 

@@ -38,6 +38,16 @@ class GameEngineTest {
         }
     }
 
+    // All cells filled, but every column has duplicates (rows repeat 1-9)
+    private static Grid gridCompleteButInvalid() {
+        int[][] vals = new int[9][9];
+        for (int r = 0; r < 9; r++)
+            for (int c = 0; c < 9; c++)
+                vals[r][c] = c + 1; // each row is 1-9, columns all duplicate
+        boolean[][] preFilled = new boolean[9][9];
+        return new Grid(vals, preFilled);
+    }
+
     // All cells filled, no empty cells at all
     private static Grid gridFullyFilled() {
         int[][] vals = {
@@ -239,6 +249,19 @@ class GameEngineTest {
         // Win with B2 7, press Enter as "any key", then quit the new round
         engine.start(new Scanner("B2 7\n\nquit\n"));
         assertEquals(2, initialGridCalls[0], "Pressing any key after win should start a new puzzle");
+    }
+
+    @Test
+    void completeButInvalidGridDoesNotTriggerWin() {
+        RecordingDisplay display = new RecordingDisplay();
+        GameEngine engine = new GameEngine(
+            new FixedGenerator(gridCompleteButInvalid()),
+            new SudokuSolver(), new SudokuValidator(),
+            display, new CommandParser()
+        );
+        engine.start(new Scanner("check\nquit\n"));
+        assertFalse(display.messages.stream().anyMatch(m -> m.contains("successfully")),
+            "Complete but invalid grid must not trigger the win message");
     }
 
     @Test

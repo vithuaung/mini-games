@@ -64,6 +64,18 @@ class CommandParserTest {
     }
 
     @Test
+    void parseQShorthandQuitsGame() {
+        Optional<Command> cmd = parser.parse("q");
+        assertTrue(cmd.isPresent());
+        assertInstanceOf(QuitCommand.class, cmd.get());
+    }
+
+    @Test
+    void parseNullInputReturnsEmpty() {
+        assertTrue(parser.parse(null).isEmpty());
+    }
+
+    @Test
     void parseUnknownInputReturnsEmpty() {
         assertTrue(parser.parse("xyz").isEmpty());
         assertTrue(parser.parse("").isEmpty());

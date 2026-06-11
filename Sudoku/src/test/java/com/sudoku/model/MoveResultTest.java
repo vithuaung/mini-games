@@ -32,10 +32,4 @@ class MoveResultTest {
         assertTrue(result.message().contains("B3"));
     }
 
-    @Test
-    void invalidValueResultHasCorrectStatus() {
-        MoveResult result = MoveResult.invalidValue();
-        assertEquals(MoveResult.Status.INVALID_VALUE, result.status());
-        assertFalse(result.isSuccess());
-    }
 }
