@@ -4,6 +4,7 @@
 
 - Java 21+
 - Maven 3.8+
+- Windows, Linux, or macOS
 
 ## Build
 
@@ -61,5 +62,5 @@ The game ends when all cells are filled correctly.
 
 - Placing a number does not validate it right away. Use `check` to find violations. This is on purpose, same as how real Sudoku works.
 - The puzzle targets 30 pre-filled cells. Sometimes a few more stay in if removing them would break the unique solution guarantee.
-- `Press any key to play again...` shows on win but you need to re-run the program to actually restart.
+- `Press any key to play again...` shows on win. Press Enter to start a new game.
 - Commands are not case-sensitive.
