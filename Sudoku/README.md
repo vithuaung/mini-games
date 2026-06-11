@@ -1,4 +1,4 @@
-# Sudoku CLI — Developer Guide
+# Sudoku CLI - Developer Guide
 
 ## Requirements
 
@@ -32,7 +32,7 @@ Or from an IDE, run `com.sudoku.Main`.
 
 ## How to Play
 
-The game shows a 9×9 puzzle with 30 pre-filled numbers. Empty cells are shown as `_`.
+The game shows a 9x9 puzzle with 30 pre-filled numbers. Empty cells are shown as `_`.
 
 ```
 Welcome to Sudoku!
@@ -48,17 +48,17 @@ Enter command (e.g., A3 4, C5 clear, hint, check, quit):
 
 **Commands:**
 
-- `B3 7` — place 7 in row B, column 3
-- `C5 clear` — clear cell C5
-- `hint` — reveals one correct number
-- `check` — checks for rule violations (duplicate in row, column, or 3×3 box)
-- `quit` — exit the game
+- `B3 7` puts 7 into row B, column 3
+- `C5 clear` removes whatever is in C5
+- `hint` fills in one empty cell for you
+- `check` scans for duplicates in any row, column, or 3x3 box
+- `quit` exits the game
 
-The game ends when the grid is completely and correctly filled.
+The game ends when all cells are filled correctly.
 
 ## Assumptions
 
-- Placing a number does not immediately validate it. Use `check` to find violations. This is intentional — it matches how Sudoku is normally played.
-- The puzzle targets 30 pre-filled cells. The generator may leave slightly more if removing a clue would create multiple solutions, but uniqueness is always guaranteed.
-- `Press any key to play again...` is shown on win but restarting requires re-running the program.
-- Commands are case-insensitive.
+- Placing a number does not validate it right away. Use `check` to find violations. This is on purpose, same as how real Sudoku works.
+- The puzzle targets 30 pre-filled cells. Sometimes a few more stay in if removing them would break the unique solution guarantee.
+- `Press any key to play again...` shows on win but you need to re-run the program to actually restart.
+- Commands are not case-sensitive.
