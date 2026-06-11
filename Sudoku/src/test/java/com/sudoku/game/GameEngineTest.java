@@ -111,4 +111,62 @@ class GameEngineTest {
             .anyMatch(m -> m.toLowerCase().contains("unknown")),
             "Unrecognised input should show an error hint");
     }
+
+    @Test
+    void hintCommandPlacesANumberAndReportsIt() {
+        RecordingDisplay display = new RecordingDisplay();
+        GameEngine engine = new GameEngine(
+            new FixedGenerator(gridWithOneEmptyCell()),
+            new SudokuSolver(), new SudokuValidator(),
+            display, new CommandParser()
+        );
+        engine.start(new Scanner("hint\nquit\n"));
+        assertTrue(display.messages.stream()
+            .anyMatch(m -> m.toLowerCase().startsWith("hint: cell")),
+            "hint should report which cell was filled");
+    }
+
+    @Test
+    void clearCommandClearsANonPreFilledCell() {
+        RecordingDisplay display = new RecordingDisplay();
+        GameEngine engine = new GameEngine(
+            new FixedGenerator(gridWithOneEmptyCell()),
+            new SudokuSolver(), new SudokuValidator(),
+            display, new CommandParser()
+        );
+        // B2 is the only empty cell and is not pre-filled; clearing it directly is valid
+        engine.start(new Scanner("B2 clear\nquit\n"));
+        assertTrue(display.messages.stream()
+            .anyMatch(m -> m.toLowerCase().contains("cleared")),
+            "clear on a non-pre-filled cell should succeed");
+    }
+
+    @Test
+    void clearCommandOnPreFilledCellIsRejected() {
+        RecordingDisplay display = new RecordingDisplay();
+        GameEngine engine = new GameEngine(
+            new FixedGenerator(gridWithOneEmptyCell()),
+            new SudokuSolver(), new SudokuValidator(),
+            display, new CommandParser()
+        );
+        engine.start(new Scanner("A1 clear\nquit\n"));
+        assertTrue(display.messages.stream()
+            .anyMatch(m -> m.toLowerCase().contains("pre-filled")),
+            "clear on a pre-filled cell must be rejected");
+    }
+
+    @Test
+    void placingLastCorrectNumberTriggersWin() {
+        RecordingDisplay display = new RecordingDisplay();
+        GameEngine engine = new GameEngine(
+            new FixedGenerator(gridWithOneEmptyCell()),
+            new SudokuSolver(), new SudokuValidator(),
+            display, new CommandParser()
+        );
+        // B2 is the only empty cell; correct value is 7
+        engine.start(new Scanner("B2 7\n"));
+        assertTrue(display.messages.stream()
+            .anyMatch(m -> m.toLowerCase().contains("successfully")),
+            "Filling the last cell correctly should trigger the win message");
+    }
 }

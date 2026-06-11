@@ -48,4 +48,28 @@ class ConsoleRendererTest {
         assertTrue(output.contains("  I "), "Row I should be indented as '  I '");
         assertFalse(output.contains("|"), "Grid should not contain | column separators");
     }
+
+    @Test
+    void printGridShowsFilledCellValues() {
+        int[][] vals = new int[9][9];
+        vals[0][0] = 5;
+        vals[4][4] = 9;
+        Grid grid = new Grid(vals, NO_PREFILLED);
+        String output = captureOutput(() -> renderer.printGrid(grid));
+        assertTrue(output.contains("5"), "Filled cell value 5 should appear in output");
+        assertTrue(output.contains("9"), "Filled cell value 9 should appear in output");
+    }
+
+    @Test
+    void printWelcomeOutputsWelcomeMessage() {
+        String output = captureOutput(() -> renderer.printWelcome());
+        assertTrue(output.contains("Welcome to Sudoku"), "Welcome message should be printed");
+    }
+
+    @Test
+    void printInitialGridOutputsPuzzleHeader() {
+        Grid grid = new Grid(new int[9][9], NO_PREFILLED);
+        String output = captureOutput(() -> renderer.printInitialGrid(grid));
+        assertTrue(output.contains("Here is your puzzle"), "Initial grid should include puzzle header");
+    }
 }
